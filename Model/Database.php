@@ -23,6 +23,7 @@ class Database {
                 `name` VARCHAR(255) NOT NULL,
                 `price` FLOAT NOT NULL,
                 `duration` INT NOT NULL,
+                `validated` BOOLEAN NOT NULL DEFAULT FALSE,
                 PRIMARY KEY (`id`)
             );
 
@@ -48,6 +49,7 @@ class Database {
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `name` VARCHAR(255) NOT NULL,
                 `price` FLOAT NOT NULL,
+                `validated` BOOLEAN NOT NULL DEFAULT FALSE,
                 PRIMARY KEY (`id`)
             );
 
@@ -112,7 +114,8 @@ class Database {
         $sql = '
             SELECT `subscription`.`id`, `subscription`.`name`, `subscription`.`price`, `subscription`.`duration`, `user_subscription`.`created_at` FROM `user_subscription`
             INNER JOIN `subscription` ON `user_subscription`.`subscription_id` = `subscription`.`id`
-            WHERE `user_subscription`.`user_id` = :userId;
+            WHERE `user_subscription`.`user_id` = :userId
+            AND `subscription`.`validated` = TRUE;
         ';
         $query = Database::connection()->prepare($sql);
         $query->execute(['userId' => $userId]);
@@ -128,7 +131,8 @@ class Database {
         $sql = '
             SELECT `skin`.`id`, `skin`.`name`, `skin`.`price`, `user_skin`.`created_at` FROM `user_skin`
             INNER JOIN `skin` ON `user_skin`.`skin_id` = `skin`.`id`
-            WHERE `user_skin`.`user_id` = :userId;
+            WHERE `user_skin`.`user_id` = :userId
+            AND `skin`.`validated` = TRUE;
         ';
         $query = Database::connection()->prepare($sql);
         $query->execute(['userId' => $userId]);
