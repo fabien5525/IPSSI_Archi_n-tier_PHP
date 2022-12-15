@@ -102,6 +102,10 @@ class Database {
         return $query->execute();
     }
 
+    /**
+     * Get all skins
+     * @return array
+     */
     static function querySkins() : array {
         $sql = '
             SELECT * FROM `skin`;
@@ -111,6 +115,10 @@ class Database {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Get all subscriptions
+     * @return array
+     */
     static function querySubscriptions() : array {
         $sql = '
             SELECT * FROM `subscription`;
@@ -120,6 +128,10 @@ class Database {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Get all users
+     * @return array
+     */
     static function getTickets(int $userId) : int {
         $sql = '
             SELECT `ticket` FROM `user` WHERE `id` = :userId;
@@ -129,6 +141,11 @@ class Database {
         return $query->fetch(PDO::FETCH_ASSOC)['ticket'] ?? 0;
     }
 
+    /**
+     * Get all subscriptions of a user
+     * @param int $userId
+     * @return array
+     */
     static function getSubscriptions(int $userId) : array {
         $sql = '
             SELECT `subscription`.`id`, `subscription`.`name`, `subscription`.`price`, `subscription`.`duration`, `user_subscription`.`created_at` FROM `user_subscription`
@@ -140,6 +157,11 @@ class Database {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Get all skins of a user
+     * @param int $userId
+     * @return array
+     */
     static function getSkins(int $userId) : array {
         $sql = '
             SELECT `skin`.`id`, `skin`.`name`, `skin`.`price`, `user_skin`.`created_at` FROM `user_skin`
