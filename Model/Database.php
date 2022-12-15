@@ -43,20 +43,20 @@ class Database {
                 PRIMARY KEY (`id`)
             );
 
-            INSERT INTO `user` (`ticket`) VALUES
-            (5);
+            INSERT INTO `user` (`id`, `ticket`) VALUES
+            (1,5);
 
-            INSERT INTO `user` (`ticket`) VALUES
-            (0);
+            INSERT INTO `user` (`id`, `ticket`) VALUES
+            (2,0);
 
-            INSERT INTO `user` (`ticket`) VALUES
-            (13);
+            INSERT INTO `user` (`id`, `ticket`) VALUES
+            (3,13);
 
-            INSERT INTO `user` (`ticket`) VALUES
-            (115);
+            INSERT INTO `user` (`id`, `ticket`) VALUES
+            (4,115);
 
-            INSERT INTO `user` (`ticket`) VALUES
-            (15);
+            INSERT INTO `user` (`id`, `ticket`) VALUES
+            (5,15);
 
             CREATE TABLE IF NOT EXISTS `user_subscription` (
                 `user_id` INT NOT NULL,
