@@ -72,5 +72,45 @@ class Database {
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    static function querySubscriptions() : array {
+        $sql = '
+            SELECT * FROM `subscription`;
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    static function getTickets(int $userId) : int {
+        $sql = '
+            SELECT `ticket` FROM `user` WHERE `id` = :userId;
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute(['userId' => $userId]);
+        return $query->fetch(PDO::FETCH_ASSOC)['ticket'] ?? 0;
+    }
+
+    static function getSubscriptions(int $userId) : array {
+        $sql = '
+            SELECT `subscription`.`id`, `subscription`.`name`, `subscription`.`price`, `subscription`.`duration`, `user_subscription`.`created_at` FROM `user_subscription`
+            INNER JOIN `subscription` ON `user_subscription`.`subscription_id` = `subscription`.`id`
+            WHERE `user_subscription`.`user_id` = :userId;
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute(['userId' => $userId]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    static function getSkins(int $userId) : array {
+        $sql = '
+            SELECT `skin`.`id`, `skin`.`name`, `skin`.`price`, `user_skin`.`created_at` FROM `user_skin`
+            INNER JOIN `skin` ON `user_skin`.`skin_id` = `skin`.`id`
+            WHERE `user_skin`.`user_id` = :userId;
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute(['userId' => $userId]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
