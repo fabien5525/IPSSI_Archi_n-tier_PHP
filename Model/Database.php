@@ -43,19 +43,19 @@ class Database {
                 PRIMARY KEY (`id`)
             );
 
-            INSERT INTO `skin` (`ticket`) VALUES
+            INSERT INTO `user` (`ticket`) VALUES
             (5);
 
-            INSERT INTO `skin` (`ticket`) VALUES
+            INSERT INTO `user` (`ticket`) VALUES
             (0);
 
-            INSERT INTO `skin` (`ticket`) VALUES
+            INSERT INTO `user` (`ticket`) VALUES
             (13);
 
-            INSERT INTO `skin` (`ticket`) VALUES
+            INSERT INTO `user` (`ticket`) VALUES
             (115);
 
-            INSERT INTO `skin` (`ticket`) VALUES
+            INSERT INTO `user` (`ticket`) VALUES
             (15);
 
             CREATE TABLE IF NOT EXISTS `user_subscription` (
