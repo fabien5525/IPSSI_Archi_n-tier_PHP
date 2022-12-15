@@ -30,11 +30,33 @@ class Database {
             INSERT INTO `subscription` (`name`, `price`, `duration`) VALUES
             ("3 ticket par jour", 5, 30);
 
+            INSERT INTO `subscription` (`name`, `price`, `duration`) VALUES
+            ("8 ticket par jour", 15, 30);
+
+            INSERT INTO `subscription` (`name`, `price`, `duration`) VALUES
+            ("15 ticket par jour", 30, 30);
+
+
             CREATE TABLE IF NOT EXISTS `user` (
                 `id` INT NOT NULL,
                 `ticket` INT NOT NULL DEFAULT 0,
                 PRIMARY KEY (`id`)
             );
+
+            INSERT INTO `skin` (`ticket`) VALUES
+            (5);
+
+            INSERT INTO `skin` (`ticket`) VALUES
+            (0);
+
+            INSERT INTO `skin` (`ticket`) VALUES
+            (13);
+
+            INSERT INTO `skin` (`ticket`) VALUES
+            (115);
+
+            INSERT INTO `skin` (`ticket`) VALUES
+            (15);
 
             CREATE TABLE IF NOT EXISTS `user_subscription` (
                 `user_id` INT NOT NULL,
@@ -52,6 +74,22 @@ class Database {
                 `validated` BOOLEAN NOT NULL DEFAULT FALSE,
                 PRIMARY KEY (`id`)
             );
+
+
+            INSERT INTO `skin` (`name`, `price`) VALUES
+            ("pepo rouge ", 5);
+
+            INSERT INTO `skin` (`name`, `price`) VALUES
+            ("pepo infernal galactique ", 20.5);
+
+            INSERT INTO `skin` (`name`, `price`) VALUES
+            ("susan",13 );
+
+            INSERT INTO `skin` (`name`, `price`) VALUES
+            ("lamantin urf", 115);
+
+            INSERT INTO `skin` (`name`, `price`) VALUES
+            ("huit neuf", 15);
 
             CREATE TABLE IF NOT EXISTS `user_skin` (
                 `user_id` INT NOT NULL,
