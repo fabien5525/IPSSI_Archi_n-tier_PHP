@@ -10,7 +10,7 @@ class Database {
         return Database::$connection;
     }
 
-    static function initDatabase() {
+    static function initDatabase() : int {
         $sql = '
             DROP TABLE IF EXISTS `user_skin`;
             DROP TABLE IF EXISTS `skin`;
@@ -62,6 +62,15 @@ class Database {
         ';
         $query = Database::connection()->prepare($sql);
         return $query->execute();
+    }
+
+    static function querySkins() : array {
+        $sql = '
+            SELECT * FROM `skin`;
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
