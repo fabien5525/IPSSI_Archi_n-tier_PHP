@@ -208,7 +208,7 @@ class Database {
     static function setTicketToUser(int $userId,$nbTicket){
         $sql=
         '
-        UPDATE user SET ticket = ? WHERE user_id = ?;
+        UPDATE user SET ticket = ? WHERE id = ?;
         ';
         $query = Database::connection()->prepare($sql); 
         $query->execute([$userId,$nbTicket]);
@@ -217,7 +217,7 @@ class Database {
     static function buyTicket(int $userId){
         $sql=
         '
-        UPDATE user SET ticket = ticket + 1 WHERE user_id = ?;
+        UPDATE user SET ticket = ticket + 1 WHERE id = ?;
         ';
         $query = Database::connection()->prepare($sql); 
         $query->execute([$userId]);
@@ -226,28 +226,41 @@ class Database {
     static function consumeTicket(int $userId){
         $sql=
         '
-        UPDATE user SET ticket = ticket - 1 WHERE user_id = ?;
+        UPDATE user SET ticket = ticket - 1 WHERE id = ?;
         ';
 
         $query = Database::connection()->prepare($sql); 
         $query->execute([$userId]);
 
     }
-    // static function setUser(int $nbTicket = 1){
 
-    //     $sql =
-    //     '
-    //     SELECT `skin`.`id`, `skin`.`name`, `skin`.`price`, `user_skin`.`created_at` FROM `user_skin`
-    //     INNER JOIN `skin` ON `user_skin`.`skin_id` = `skin`.`id`
-    //     WHERE `user_skin`.`user_id` = :userId
-    //     AND `skin`.`validated` = TRUE;
-    //     ';
+    static function existUser(int $userId){
+        $sql=
+        '
+        SELECT * FROM user WHERE id = ?;
+        ';
 
-    //     $sql='
-    //     INSERT INTO `skin` (`name`, `price`) VALUES
-    //     ("pepo rouge ", 5);
-    //     '
+        $query = Database::connection()->prepare($sql); 
+        $query->execute([$userId]);
+        $taille = $query->fetchAll(PDO::FETCH_ASSOC);
+        if(sizeof($taille) == 0){
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
 
-    // }
+    }
+    static function setUser(int $userId){
+        if(!existUser($userId)){
+        $sql='
+        INSERT INTO `user` (`id`, `ticket`) VALUES
+        (:userId,0);
+        ';
+
+        $query = Database::connection()->prepare($sql);
+        $query->execute([":userId"=>$userId]);
+        }
+    }
 }
 
