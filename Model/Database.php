@@ -1,16 +1,21 @@
 <?php
 
-class Database {
+require_once('../debug.php');
+
+class Database
+{
     private static $connection;
 
-    static function connection() {
+    static function connection()
+    {
         if (Database::$connection == null) {
             Database::$connection = new PDO('mysql:host=localhost;dbname=catalogue;charset=utf8', 'root', '');
         }
         return Database::$connection;
     }
 
-    static function initDatabase() : int {
+    static function initDatabase(): int
+    {
         $sql = '
             DROP TABLE IF EXISTS `user_skin`;
             DROP TABLE IF EXISTS `skin`;
@@ -114,7 +119,8 @@ class Database {
      * Get all skins
      * @return array
      */
-    static function querySkins() : array {
+    static function querySkins(): array
+    {
         $sql = '
             SELECT * FROM `skin`;
         ';
@@ -127,7 +133,8 @@ class Database {
      * Get all subscriptions
      * @return array
      */
-    static function querySubscriptions() : array {
+    static function querySubscriptions(): array
+    {
         $sql = '
             SELECT * FROM `subscription`;
         ';
@@ -140,7 +147,8 @@ class Database {
      * Get all users
      * @return array
      */
-    static function getTickets(int $userId) : int {
+    static function getTickets(int $userId): int
+    {
         $sql = '
             SELECT `ticket` FROM `user` WHERE `id` = :userId;
         ';
@@ -154,7 +162,8 @@ class Database {
      * @param int $userId
      * @return array
      */
-    static function getSubscriptions(int $userId) : array {
+    static function getSubscriptions(int $userId): array
+    {
         $sql = '
             SELECT `subscription`.`id`, `subscription`.`name`, `subscription`.`price`, `subscription`.`duration`, `user_subscription`.`created_at` FROM `user_subscription`
             INNER JOIN `subscription` ON `user_subscription`.`subscription_id` = `subscription`.`id`
@@ -171,7 +180,8 @@ class Database {
      * @param int $userId
      * @return array
      */
-    static function getSkins(int $userId) : array {
+    static function getSkins(int $userId): array
+    {
         $sql = '
             SELECT `skin`.`id`, `skin`.`name`, `skin`.`price`, `user_skin`.`created_at` FROM `user_skin`
             INNER JOIN `skin` ON `user_skin`.`skin_id` = `skin`.`id`
@@ -183,7 +193,8 @@ class Database {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    static function setSkinsToUser(int $userId, int $skinId){
+    static function setSkinsToUser(int $userId, int $skinId)
+    {
         $date = date('d-m-y');
         $sql = '
         INSERT INTO `user_skin` (`user_id`, `skin_id`,`created_at`) VALUES
@@ -191,10 +202,11 @@ class Database {
 
         ';
         $query = Database::connection()->prepare($sql);
-        $query->execute([":userId"=>$userId,":skinId"=>$skinId,":date" => $date]);
+        $query->execute([":userId" => $userId, ":skinId" => $skinId, ":date" => $date]);
     }
 
-    static function setSubscriptionToUser(int $userId,int $subscriptionId){
+    static function setSubscriptionToUser(int $userId, int $subscriptionId)
+    {
         $date = date('d-m-y');
         $sql = '
         INSERT INTO `user_subscription` (`user_id`, `user_subscription`,`created_at`) VALUES
@@ -202,65 +214,65 @@ class Database {
 
         ';
         $query = Database::connection()->prepare($sql);
-        $query->execute([":userId"=>$userId,":skinId"=>$subscriptionId,":date" => $date]);
+        $query->execute([":userId" => $userId, ":skinId" => $subscriptionId, ":date" => $date]);
     }
 
-    static function setTicketToUser(int $userId,$nbTicket){
-        $sql=
-        '
+    static function setTicketToUser(int $userId, $nbTicket)
+    {
+        $sql =
+            '
         UPDATE user SET ticket = ? WHERE id = ?;
         ';
-        $query = Database::connection()->prepare($sql); 
-        $query->execute([$userId,$nbTicket]);
-
+        $query = Database::connection()->prepare($sql);
+        $query->execute([$userId, $nbTicket]);
     }
-    static function buyTicket(int $userId){
-        $sql=
-        '
+    static function buyTicket(int $userId)
+    {
+        $sql =
+            '
         UPDATE user SET ticket = ticket + 1 WHERE id = ?;
         ';
-        $query = Database::connection()->prepare($sql); 
+        $query = Database::connection()->prepare($sql);
         $query->execute([$userId]);
     }
 
-    static function consumeTicket(int $userId){
-        $sql=
-        '
+    static function consumeTicket(int $userId)
+    {
+        $sql =
+            '
         UPDATE user SET ticket = ticket - 1 WHERE id = ?;
         ';
 
-        $query = Database::connection()->prepare($sql); 
+        $query = Database::connection()->prepare($sql);
         $query->execute([$userId]);
-
     }
 
-    static function existUser(int $userId){
-        $sql=
-        '
+    static function existUser(int $userId)
+    {
+        $sql =
+            '
         SELECT * FROM user WHERE id = ?;
         ';
 
-        $query = Database::connection()->prepare($sql); 
+        $query = Database::connection()->prepare($sql);
         $query->execute([$userId]);
         $taille = $query->fetchAll(PDO::FETCH_ASSOC);
-        if(sizeof($taille) == 0){
+        if (sizeof($taille) == 0) {
             return FALSE;
-        }
-        else{
+        } else {
             return TRUE;
         }
-
     }
-    static function setUser(int $userId){
-        if(!existUser($userId)){
-        $sql='
+    static function setUser(int $userId)
+    {
+        if (!existUser($userId)) {
+            $sql = '
         INSERT INTO `user` (`id`, `ticket`) VALUES
         (:userId,0);
         ';
 
-        $query = Database::connection()->prepare($sql);
-        $query->execute([":userId"=>$userId]);
+            $query = Database::connection()->prepare($sql);
+            $query->execute([":userId" => $userId]);
         }
     }
 }
-
