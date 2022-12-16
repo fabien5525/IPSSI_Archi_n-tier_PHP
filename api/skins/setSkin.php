@@ -3,6 +3,6 @@
 $userId = $_GET['user_id'];
 require_once('../../Model/Database.php');
 
+$skinId = $_GET['skin_id']
 
-$AllSub = Database::getSkins($userId);
-echo json_encode($AllSub);
+Database::setSkinsToUser($userId,$skinId);

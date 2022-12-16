@@ -99,6 +99,12 @@ class Database {
                 FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
                 FOREIGN KEY (`skin_id`) REFERENCES `skin`(`id`)
             );
+
+            INSERT INTO `user_skin` (`user_id`, `skin_id`,`created_at`) VALUES
+            (1,1 ,now());
+
+            INSERT INTO `user_subscription` (`user_id`, `subscription_id`,`created_at`) VALUES
+            (1,1 ,now());
         ';
         $query = Database::connection()->prepare($sql);
         return $query->execute();
@@ -176,5 +182,55 @@ class Database {
         $query->execute(['userId' => $userId]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    static function setSkinsToUser(int $userId, int $skinId){
+        $date = date('d-m-y');
+        $sql = '
+        INSERT INTO `user_skin` (`user_id`, `skin_id`,`created_at`) VALUES
+        (:userId,:skinId ,:date);
+
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute([":userId"=>$userId,":skinId"=>$skinId,":date" => $date]);
+    }
+
+    static function setSubscriptionToUser(int $userId,int $subscriptionId){
+        $date = date('d-m-y');
+        $sql = '
+        INSERT INTO `user_subscription` (`user_id`, `user_subscription`,`created_at`) VALUES
+        (:userId,:subscriptionId ,:date);
+
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute([":userId"=>$userId,":skinId"=>$subscriptionId,":date" => $date]);
+    }
+
+    static function setTicketToUser(int $userId){
+        $date = date('d-m-y');
+        $sql = '
+        INSERT INTO `user_subscription` (`user_id`, `user_subscription`,`created_at`) VALUES
+        (:userId,:subscriptionId ,:date);
+
+        ';
+        $query = Database::connection()->prepare($sql);
+        $query->execute([":userId"=>$userId,":skinId"=>$subscriptionId,":date" => $date]);
+    }
+
+    // static function setUser(int $nbTicket = 1){
+
+    //     $sql =
+    //     '
+    //     SELECT `skin`.`id`, `skin`.`name`, `skin`.`price`, `user_skin`.`created_at` FROM `user_skin`
+    //     INNER JOIN `skin` ON `user_skin`.`skin_id` = `skin`.`id`
+    //     WHERE `user_skin`.`user_id` = :userId
+    //     AND `skin`.`validated` = TRUE;
+    //     ';
+
+    //     $sql='
+    //     INSERT INTO `skin` (`name`, `price`) VALUES
+    //     ("pepo rouge ", 5);
+    //     '
+
+    // }
 }
 

@@ -1,8 +1,6 @@
 <?php
-
-$userId = $_GET['user_id'];
 require_once('../../Model/Database.php');
 
 
-$AllSub = Database::getSkins($userId);
+$AllSub = Database::querySkins();
 echo json_encode($AllSub);

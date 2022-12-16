@@ -1,8 +1,8 @@
 <?php
 
-$userId = $_GET['user_id']
-require_once('../../Database.php')
+$userId = $_GET['user_id'];
+require_once('../../Model/Database.php');
 
 
-$AllSub = getTickets(int $userId)
+$AllSub = Database::getTickets($userId);
 echo json_encode($AllSub);

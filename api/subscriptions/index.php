@@ -1,8 +1,8 @@
 <?php
+require_once('../../Model/Database.php');
 
-$userId = $_GET['user_id']
-require_once('../../Database.php')
+$userId = $_GET['user_id'];
 
 
-$AllSub = getSubscriptions(int $userId)
+$AllSub = Database::getSubscriptions($userId);
 echo json_encode($AllSub);
