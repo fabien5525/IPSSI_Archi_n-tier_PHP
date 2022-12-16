@@ -1,6 +1,5 @@
 <?php
 
-require_once('./debug.php');
 require_once('Model/Database.php');
 
 if (Database::connection()) {
