@@ -205,17 +205,34 @@ class Database {
         $query->execute([":userId"=>$userId,":skinId"=>$subscriptionId,":date" => $date]);
     }
 
-    static function setTicketToUser(int $userId){
-        $date = date('d-m-y');
-        $sql = '
-        INSERT INTO `user_subscription` (`user_id`, `user_subscription`,`created_at`) VALUES
-        (:userId,:subscriptionId ,:date);
-
+    static function setTicketToUser(int $userId,$nbTicket){
+        $sql=
+        '
+        UPDATE user SET ticket = ? WHERE user_id = ?;
         ';
-        $query = Database::connection()->prepare($sql);
-        $query->execute([":userId"=>$userId,":skinId"=>$subscriptionId,":date" => $date]);
+        $query = Database::connection()->prepare($sql); 
+        $query->execute([$userId,$nbTicket]);
+
+    }
+    static function buyTicket(int $userId){
+        $sql=
+        '
+        UPDATE user SET ticket = ticket + 1 WHERE user_id = ?;
+        ';
+        $query = Database::connection()->prepare($sql); 
+        $query->execute([$userId]);
     }
 
+    static function consumeTicket(int $userId){
+        $sql=
+        '
+        UPDATE user SET ticket = ticket - 1 WHERE user_id = ?;
+        ';
+
+        $query = Database::connection()->prepare($sql); 
+        $query->execute([$userId]);
+
+    }
     // static function setUser(int $nbTicket = 1){
 
     //     $sql =
